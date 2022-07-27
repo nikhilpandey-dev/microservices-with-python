@@ -1,5 +1,7 @@
 from flask_sqlalchemy import SQLAlchemy
 from flask_login import UserMixin
+from werkzeug.security import generate_password_hash, check_password_hash
+from datetime import datetime
 db = SQLAlchemy()
 
 def init_app(app):
@@ -28,4 +30,8 @@ class User(db.Model, UserMixin):
             'api_key': self.api_key
         }
         return user_data
+    
+    def update_api_key(self):
+        self.api_key = generate_password_hash(self.username+str(datetime.utcnow))
+        
 
